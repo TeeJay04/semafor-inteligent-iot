@@ -18,9 +18,8 @@ folosind ESP32, protocol MQTT, Node-RED și o bază de date PostgreSQL.
 - Stocarea evenimentelor în PostgreSQL
 
 ## Structura proiectului
-- `embedded/` – cod ESP32
-- `node-red/` – flow-uri Node-RED
-- `database/` – schema bazei de date
-- `docs/` – diagrame și capturi ecran
 
-
+- `embedded/` – cod sursă pentru ESP32 (detectare senzori, publicare MQTT)
+- `node-red/` – flow-urile Node-RED pentru logică și dashboard
+- `database/` – scriptul SQL pentru crearea tabelului
+- `docs/` – capturi de ecran și diagrame utilizate în documentație

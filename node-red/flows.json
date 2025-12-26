@@ -1,0 +1,671 @@
+[
+    {
+        "id": "cbb1380de4c4401f",
+        "type": "tab",
+        "label": "Semafor Inteligent MQTT",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "bc2ad17e14e80576",
+        "type": "ui-template",
+        "z": "cbb1380de4c4401f",
+        "group": "8777a918f0adf38e",
+        "page": "",
+        "ui": "",
+        "name": "Indicator semafor (UI)",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "head": "",
+        "format": "<div :style=\"{\n    width: '90px',\n    height: '90px',\n    borderRadius: '50%',\n    backgroundColor: msg.payload,\n    margin: 'auto',\n    border: '2px solid #444'\n}\">\n</div>\n",
+        "storeOutMessages": true,
+        "passthru": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 780,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7ea4a1b0969c61fb",
+        "type": "change",
+        "z": "cbb1380de4c4401f",
+        "name": "Mapare stare → culoare",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "(\t  $p := $uppercase($string(payload));\t  $p = \"R\" ? \"#d32f2f\" :\t  $p = \"G\" ? \"#fbc02d\" :\t  $p = \"V\" ? \"#2e7d32\" : \"#808080\"\t)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 490,
+        "y": 80,
+        "wires": [
+            [
+                "bc2ad17e14e80576"
+            ]
+        ]
+    },
+    {
+        "id": "dc0696a5a7a6358e",
+        "type": "mqtt in",
+        "z": "cbb1380de4c4401f",
+        "name": "Senzor distanta vehicule MQTT",
+        "topic": "trafic/senzor/numar_vehicule",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "74ea1e08b02950b5",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 190,
+        "y": 160,
+        "wires": [
+            [
+                "090fbd386d9f3b15"
+            ]
+        ]
+    },
+    {
+        "id": "0c5c9473165204d1",
+        "type": "ui-text",
+        "z": "cbb1380de4c4401f",
+        "group": "8777a918f0adf38e",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "Vehicule detectate",
+        "label": "Vehicul detectat:",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "style": true,
+        "font": "Arial,Arial,Helvetica,sans-serif",
+        "fontSize": 16,
+        "color": "#717171",
+        "wrapText": false,
+        "className": "",
+        "value": "payload",
+        "valueType": "msg",
+        "x": 770,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "38a43b800b9d39d1",
+        "type": "ui-button",
+        "z": "cbb1380de4c4401f",
+        "group": "8777a918f0adf38e",
+        "name": "Buton pieton",
+        "label": "Pieton",
+        "order": 3,
+        "width": "3",
+        "height": "1",
+        "emulateClick": false,
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "gesture-tap / stop",
+        "iconPosition": "left",
+        "payload": "apasat",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "buttonColor": "",
+        "textColor": "",
+        "iconColor": "",
+        "enableClick": true,
+        "enablePointerdown": false,
+        "pointerdownPayload": "",
+        "pointerdownPayloadType": "str",
+        "enablePointerup": false,
+        "pointerupPayload": "",
+        "pointerupPayloadType": "str",
+        "x": 770,
+        "y": 240,
+        "wires": [
+            [
+                "2dd07a15efda70bf"
+            ]
+        ]
+    },
+    {
+        "id": "2dd07a15efda70bf",
+        "type": "mqtt out",
+        "z": "cbb1380de4c4401f",
+        "name": "Publicare buton pieton MQTT",
+        "topic": "trafic/senzor/buton_pieton",
+        "qos": "0",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "74ea1e08b02950b5",
+        "x": 1080,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "090fbd386d9f3b15",
+        "type": "trigger",
+        "z": "cbb1380de4c4401f",
+        "name": "Auto‑reset vehicul detectat",
+        "op1": "Da",
+        "op2": "Nu",
+        "op1type": "str",
+        "op2type": "str",
+        "duration": "1",
+        "extend": false,
+        "overrideDelay": false,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 500,
+        "y": 160,
+        "wires": [
+            [
+                "0c5c9473165204d1"
+            ]
+        ]
+    },
+    {
+        "id": "10fe9440832699d1",
+        "type": "ui-button",
+        "z": "cbb1380de4c4401f",
+        "group": "8777a918f0adf38e",
+        "name": "Buton rosu",
+        "label": "Rosu",
+        "order": 4,
+        "width": "1",
+        "height": "1",
+        "emulateClick": false,
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "iconPosition": "right",
+        "payload": "R",
+        "payloadType": "str",
+        "topic": "",
+        "topicType": "str",
+        "buttonColor": "#d32f2f",
+        "textColor": "",
+        "iconColor": "",
+        "enableClick": true,
+        "enablePointerdown": false,
+        "pointerdownPayload": "",
+        "pointerdownPayloadType": "str",
+        "enablePointerup": false,
+        "pointerupPayload": "",
+        "pointerupPayloadType": "str",
+        "x": 770,
+        "y": 320,
+        "wires": [
+            [
+                "b968c99ae14e0ab2"
+            ]
+        ]
+    },
+    {
+        "id": "a673b274f0575761",
+        "type": "ui-button",
+        "z": "cbb1380de4c4401f",
+        "group": "8777a918f0adf38e",
+        "name": "Buton galben",
+        "label": "Galben",
+        "order": 5,
+        "width": "1",
+        "height": "1",
+        "emulateClick": false,
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "iconPosition": "left",
+        "payload": "G",
+        "payloadType": "str",
+        "topic": "",
+        "topicType": "str",
+        "buttonColor": "#fbc02d",
+        "textColor": "",
+        "iconColor": "",
+        "enableClick": true,
+        "enablePointerdown": false,
+        "pointerdownPayload": "",
+        "pointerdownPayloadType": "str",
+        "enablePointerup": false,
+        "pointerupPayload": "",
+        "pointerupPayloadType": "str",
+        "x": 770,
+        "y": 360,
+        "wires": [
+            [
+                "b968c99ae14e0ab2"
+            ]
+        ]
+    },
+    {
+        "id": "24d6394fa415af06",
+        "type": "ui-button",
+        "z": "cbb1380de4c4401f",
+        "group": "8777a918f0adf38e",
+        "name": "Buton verde",
+        "label": "Verde",
+        "order": 6,
+        "width": "1",
+        "height": "1",
+        "emulateClick": false,
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "iconPosition": "left",
+        "payload": "V",
+        "payloadType": "str",
+        "topic": "",
+        "topicType": "str",
+        "buttonColor": "#2e7d32",
+        "textColor": "",
+        "iconColor": "",
+        "enableClick": true,
+        "enablePointerdown": false,
+        "pointerdownPayload": "",
+        "pointerdownPayloadType": "str",
+        "enablePointerup": false,
+        "pointerupPayload": "",
+        "pointerupPayloadType": "str",
+        "x": 770,
+        "y": 400,
+        "wires": [
+            [
+                "b968c99ae14e0ab2"
+            ]
+        ]
+    },
+    {
+        "id": "b968c99ae14e0ab2",
+        "type": "mqtt out",
+        "z": "cbb1380de4c4401f",
+        "name": "Publicare comanda semafor MQTT",
+        "topic": "trafic/cmd/semafor",
+        "qos": "0",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "74ea1e08b02950b5",
+        "x": 1080,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "07e1ee341b6876a4",
+        "type": "mqtt in",
+        "z": "cbb1380de4c4401f",
+        "name": "Senzor buton pieton MQTT",
+        "topic": "trafic/senzor/buton_pieton",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "74ea1e08b02950b5",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 210,
+        "y": 420,
+        "wires": [
+            [
+                "26d650d171bd2163"
+            ]
+        ]
+    },
+    {
+        "id": "26d650d171bd2163",
+        "type": "function",
+        "z": "cbb1380de4c4401f",
+        "name": "Control semafor automat",
+        "func": "// Preluare stare curenta sau initializare\nlet stare = flow.get(\"stare\") || \"V\";\nlet cerere_pieton = flow.get(\"cerere_pieton\") || false;\nlet vehicul_detectat = flow.get(\"vehicul_detectat\") || false;\n\n// Variabila pentru a decide dacă rulăm logica de semafor acum sau asteptam ciclul\nlet executa_logica = false;\n\n// 1. GESTIONARE INPUT PIETON\nif (msg.topic === \"trafic/senzor/buton_pieton\") {\n    // Verificam dacă mesajul este de apasare (payload \"apasat\")\n    if (msg.payload === \"apasat\") {\n        cerere_pieton = true;\n        flow.set(\"cerere_pieton\", true);\n\n        // Daca semaforul e verde, nu mai așteptam timer-ul\n        if (stare === \"V\") {\n            executa_logica = true;\n        }\n    }\n}\n\n// 2. GESTIONARE INPUT VEHICUL\nelse if (msg.topic === \"trafic/senzor/numar_vehicule\") {\n    // Verificam ce trimite nodul Trigger (Auto-reset)\n    // El trimite boolean false cand expira timpul\n    if (msg.payload === false || msg.payload === \"false\" || msg.payload === 0) {\n        vehicul_detectat = false;\n    } else {\n        vehicul_detectat = true;\n    }\n\n    flow.set(\"vehicul_detectat\", vehicul_detectat);\n    // La vehicule nu fortam executia instanta, lasam ciclul sa decida prelungirea verdelui\n}\n\n// 3. GESTIONARE TIMER CICLIC - nodul Inject\nelse if (msg.topic === \"trafic/ciclu\") {\n    executa_logica = true;\n}\n\n// Daca nu trebuie sa executam logica (doar am actualizat o variabila de vehicul), iesim\nif (!executa_logica) {\n    return null;\n}\n\n// ===========================\n//      LOGICA STARE SISTEM\n// ===========================\n\nswitch (stare) {\n\n    case \"V\":  // VERDE\n        if (cerere_pieton) {\n            // Pietonul are prioritate -> Trecem in Galben\n            stare = \"G\";\n        }\n        else if (vehicul_detectat) {\n            // Daca e vehicul si nu e pieton -> Ramane Verde\n            // Resetam practic timer-ul ramanand in starea asta\n            stare = \"V\";\n        }\n        else {\n            // Nu se detecteaza nimic -> Ciclare normala\n            stare = \"G\";\n        }\n        break;\n\n    case \"G\": // GALBEN\n        stare = \"R\";\n        break;\n\n    case \"R\": // ROSU\n        stare = \"V\";\n\n        // Resetam cererile doar cand ne intoarcem in Verde\n        // (Dupa ce s-a terminat ciclul de asteptare)\n        cerere_pieton = false;\n        flow.set(\"cerere_pieton\", false);\n\n        break;\n}\n\n// Salvare stare noua\nflow.set(\"stare\", stare);\n\n// Afisam status mic sub nod pentru debugging\nnode.status({ fill: stare === \"V\" ? \"green\" : stare === \"R\" ? \"red\" : \"yellow\", shape: \"dot\", text: stare });\n\n// Emitere comanda catre embedded\nreturn {\n    payload: stare,\n    topic: \"trafic/cmd/semafor\"\n};",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "// Code added here will be run once\n// whenever the node is started.\nflow.set(\"stare\", \"V\");\nflow.set(\"cerere_pieton\", false);\nflow.set(\"vehicul_detectat\", false);\n\nnode.log(\"Semafor: sistem automat pornit.\");",
+        "finalize": "// Code added here will be run when the\n// node is being stopped or re-deployed.\nnode.log(\"Semafor: automatizare oprită.\");\n",
+        "libs": [],
+        "x": 750,
+        "y": 480,
+        "wires": [
+            [
+                "b968c99ae14e0ab2"
+            ]
+        ]
+    },
+    {
+        "id": "ef9ccb1b67620954",
+        "type": "inject",
+        "z": "cbb1380de4c4401f",
+        "name": "Ciclu automat semafor",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "3",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "trafic/ciclu",
+        "payload": "",
+        "payloadType": "date",
+        "x": 210,
+        "y": 480,
+        "wires": [
+            [
+                "26d650d171bd2163"
+            ]
+        ]
+    },
+    {
+        "id": "3a8b308c8c4e88c6",
+        "type": "mqtt in",
+        "z": "cbb1380de4c4401f",
+        "name": "Senzor distanta vehicule MQTT",
+        "topic": "trafic/senzor/numar_vehicule",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "74ea1e08b02950b5",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 190,
+        "y": 360,
+        "wires": [
+            [
+                "27a47fd3058e76ca"
+            ]
+        ]
+    },
+    {
+        "id": "27a47fd3058e76ca",
+        "type": "trigger",
+        "z": "cbb1380de4c4401f",
+        "name": "Auto‑reset vehicul detectat",
+        "op1": "1",
+        "op2": "false",
+        "op1type": "str",
+        "op2type": "bool",
+        "duration": "2",
+        "extend": false,
+        "overrideDelay": false,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 500,
+        "y": 360,
+        "wires": [
+            [
+                "26d650d171bd2163"
+            ]
+        ]
+    },
+    {
+        "id": "519b22edd3cd696d",
+        "type": "postgresql",
+        "z": "cbb1380de4c4401f",
+        "name": "",
+        "query": "INSERT INTO trafic_log (stare, vehicul, pieton)\nVALUES ($1, $2, $3);\n",
+        "postgreSQLConfig": "dac32c5ac333535b",
+        "split": false,
+        "rowsPerMsg": 1,
+        "outputs": 1,
+        "x": 770,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2e475a28fb07a3bb",
+        "type": "mqtt in",
+        "z": "cbb1380de4c4401f",
+        "name": "Monitorizare stare + senzori MQTT",
+        "topic": "trafic/#",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "74ea1e08b02950b5",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 180,
+        "y": 580,
+        "wires": [
+            [
+                "3743879b8acecde4"
+            ]
+        ]
+    },
+    {
+        "id": "3743879b8acecde4",
+        "type": "function",
+        "z": "cbb1380de4c4401f",
+        "name": "Preprocesare pentru DB",
+        "func": "// Citim variabilele\nlet stare = flow.get(\"stare\") || null;\nlet vehicul = flow.get(\"vehicul_detectat\") || false;\nlet pieton = flow.get(\"cerere_pieton\") || false;\n\n// actualizam variabilele pe masura ce intra\nif (msg.topic === \"trafic/stare/semafor\") {\n    stare = msg.payload; // R / G / V\n    flow.set(\"stare\", stare);\n}\n\nif (msg.topic === \"trafic/senzor/numar_vehicule\") {\n    vehicul = (msg.payload === \"1\" || msg.payload === 1 || msg.payload === true);\n    flow.set(\"vehicul_detectat\", vehicul);\n}\n\nif (msg.topic === \"trafic/senzor/buton_pieton\") {\n    pieton = (msg.payload === \"apasat\");\n    flow.set(\"cerere_pieton\", pieton);\n}\n\n// pregatim valorile pentru SQL INSERT\nmsg.params = [\n    stare,\n    vehicul,\n    pieton\n];\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 580,
+        "wires": [
+            [
+                "519b22edd3cd696d"
+            ]
+        ]
+    },
+    {
+        "id": "2bf62fd232adf2f3",
+        "type": "mqtt in",
+        "z": "cbb1380de4c4401f",
+        "name": "Stare semafor (din embedded) MQTT",
+        "topic": "trafic/stare/semafor",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "74ea1e08b02950b5",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 80,
+        "wires": [
+            [
+                "7ea4a1b0969c61fb"
+            ]
+        ]
+    },
+    {
+        "id": "8777a918f0adf38e",
+        "type": "ui-group",
+        "name": "Stare Semafor",
+        "page": "3bd1c034c0442537",
+        "width": "3",
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "74ea1e08b02950b5",
+        "type": "mqtt-broker",
+        "name": "mosquitto",
+        "broker": "test.mosquitto.org",
+        "port": 1883,
+        "clientid": "nodered-test-tibor",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "dac32c5ac333535b",
+        "type": "postgreSQLConfig",
+        "name": "db_semafor",
+        "host": "localhost",
+        "hostFieldType": "str",
+        "port": 5432,
+        "portFieldType": "num",
+        "database": "semafor_inteligent_proiect_IoT",
+        "databaseFieldType": "str",
+        "ssl": "false",
+        "sslFieldType": "bool",
+        "applicationName": "",
+        "applicationNameType": "str",
+        "max": 10,
+        "maxFieldType": "num",
+        "idle": 1000,
+        "idleFieldType": "num",
+        "connectionTimeout": 10000,
+        "connectionTimeoutFieldType": "num",
+        "user": "postgres",
+        "userFieldType": "str",
+        "password": "TibiP76",
+        "passwordFieldType": "str"
+    },
+    {
+        "id": "3bd1c034c0442537",
+        "type": "ui-page",
+        "name": "Semafor",
+        "ui": "cfb9e5fd913b6367",
+        "path": "/semafor",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "6202ca3ae0c449f2",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 1,
+        "className": "",
+        "visible": true,
+        "disabled": false
+    },
+    {
+        "id": "cfb9e5fd913b6367",
+        "type": "ui-base",
+        "name": "Semafor Inteligent MQTT - Dashboard",
+        "path": "/dashboard",
+        "appIcon": "",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "headerContent": "page",
+        "navigationStyle": "default",
+        "titleBarStyle": "default",
+        "showReconnectNotification": true,
+        "notificationDisplayTime": 1,
+        "showDisconnectNotification": true,
+        "allowInstall": false
+    },
+    {
+        "id": "6202ca3ae0c449f2",
+        "type": "ui-theme",
+        "name": "Default Theme",
+        "colors": {
+            "surface": "#ffffff",
+            "primary": "#0094CE",
+            "bgPage": "#eeeeee",
+            "groupBg": "#ffffff",
+            "groupOutline": "#cccccc"
+        },
+        "sizes": {
+            "density": "default",
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "a53c75a89bda6a77",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "@flowfuse/node-red-dashboard": "1.30.0",
+            "node-red-contrib-postgresql": "0.15.4"
+        }
+    }
+]

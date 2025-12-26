@@ -1,0 +1,7 @@
+CREATE TABLE trafic_log (
+	id SERIAL PRIMARY KEY,
+	timp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	stare VARCHAR(1),
+	vehicul BOOLEAN,
+	pieton BOOLEAN
+);
